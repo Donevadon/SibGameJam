@@ -1,3 +1,4 @@
+using DialogModule.Panel;
 using UnityEngine;
 
 namespace DialogModule.ScriptableObjects
@@ -12,6 +13,7 @@ namespace DialogModule.ScriptableObjects
         public string Name => speakerName;
         public string Speech => speech;
         public Sprite Speaker => speaker;
-        public IButton[] Buttons { get; }
+        public ISpeechButton[] Buttons { get; set; } = new ISpeechButton[0];
     }
+
 }

@@ -1,3 +1,4 @@
+using DialogModule.Panel;
 using UnityEngine;
 
 namespace DialogModule
@@ -7,6 +8,6 @@ namespace DialogModule
         string Name { get; }
         string Speech { get; }
         Sprite Speaker { get; }
-        IButton[] Buttons { get; }
+        ISpeechButton[] Buttons { get; set; }
     }
 }
