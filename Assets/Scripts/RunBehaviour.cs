@@ -1,0 +1,31 @@
+﻿using UnityEngine;
+
+public class RunBehaviour : MonoBehaviour, IMovement
+{
+    [SerializeField] private float moveSpeed = 10f;
+    private SpriteRenderer _spriteRenderer;
+
+    public Rigidbody2D Rigidbody2D { private get; set; }
+
+    public void Awake()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    public void Move(float axisMove)
+    {
+        Flip(axisMove < 0);
+        Rigidbody2D.velocity = new Vector2(axisMove * moveSpeed, Rigidbody2D.velocity.y);
+    }
+
+    public void Stop()
+    {
+        if (Rigidbody2D.velocity.x != 0)
+            Rigidbody2D.velocity = new Vector2(0, Rigidbody2D.velocity.y);
+    }
+
+    private void Flip(bool isLeft)
+    {
+        _spriteRenderer.flipX = isLeft;
+    }
+}
