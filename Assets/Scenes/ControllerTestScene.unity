@@ -806,7 +806,8 @@ GameObject:
   - component: {fileID: 1317748576}
   - component: {fileID: 1317748577}
   - component: {fileID: 1317748578}
-  m_Layer: 7
+  - component: {fileID: 1317748579}
+  m_Layer: 6
   m_Name: wall_test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -930,7 +931,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 1
   jumpHght: 180
 --- !u!114 &1317748578
 MonoBehaviour:
@@ -946,11 +947,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wallJumpTime: 0.2
   wallSlideSpeed: 0.3
-  wallDistance: 0.77
-  isWallSliding: 0
+  wallDistance: 0.5
   WallForJump:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 64
+--- !u!114 &1317748579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317748572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd7ec0f04a0173d418036834c5e57c8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1474752327
 GameObject:
   m_ObjectHideFlags: 0

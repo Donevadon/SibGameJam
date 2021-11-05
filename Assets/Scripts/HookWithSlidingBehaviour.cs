@@ -5,7 +5,6 @@ public class HookWithSlidingBehaviour : MonoBehaviour, IMovement
     [SerializeField] private float wallJumpTime = 0.2f;
     [SerializeField] private float wallSlideSpeed = 0.3f;
     [SerializeField] private float wallDistance = 0.5f;
-    [SerializeField] private bool isWallSliding = false;
     [SerializeField] private LayerMask WallForJump;
     private float jumpTime;
     private bool hookingCapability = false;
@@ -20,12 +19,13 @@ public class HookWithSlidingBehaviour : MonoBehaviour, IMovement
         }
     }
 
+
     public void Move(float axisMove)
     {
         //Если персонаж повернут к стене, по Х не двигается (чтобы если отвернулся, то мог отлипнуть от стены)
         bool isLeft = axisMove < 0;
         Flip(isLeft);
-        Hook(isLeft, axisMove);
+        Hook(isLeft ? wallDistance * -1 : wallDistance, axisMove);
     }
 
     private void Flip(bool isLeft)
@@ -33,11 +33,21 @@ public class HookWithSlidingBehaviour : MonoBehaviour, IMovement
         _spriteRenderer.flipX = isLeft;
     }
 
-    private void Hook(bool isLeft, float axisMove)
+    private void Hook(float distance, float axisMove)
     {
-        RaycastHit2D WallCheckHit;
-        WallCheckHit = CreateRaycast(isLeft);
+        var WallCheckHit = CreateRaycast(distance);
+        var isWallSliding = WallSliding(axisMove, WallCheckHit);
+        if (isWallSliding)
+        {
+            SlidingDown();
+        }
+    }
 
+    private RaycastHit2D CreateRaycast(float distance) => Physics2D.Raycast(transform.position, new Vector2(distance, 0), wallDistance, WallForJump);
+
+    private bool WallSliding(float axisMove, RaycastHit2D WallCheckHit)
+    {
+        bool isWallSliding = true;
         if (WallCheckHit && axisMove != 0)
         {
             isWallSliding = true;
@@ -47,34 +57,10 @@ public class HookWithSlidingBehaviour : MonoBehaviour, IMovement
         {
             isWallSliding = false;
         }
-
-        if (isWallSliding)  //Скольжение вниз
-        {
-            Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, Mathf.Clamp(Rigidbody2D.velocity.y, -1 * wallSlideSpeed, float.MaxValue));
-        }
-
-        //Прыжок
-        //if (isWallSliding && Input.GetButtonDown("Jump"))
-        //{
-        //    _rigidBody.AddForce(new Vector2(0, jumpHght));
-        //}
+        return isWallSliding;
     }
 
-    private RaycastHit2D CreateRaycast(bool isLeft)
-    {
-        RaycastHit2D WallCheckHit;
-        if (isLeft)
-        {
-            WallCheckHit = Physics2D.Raycast(transform.position, new Vector2(-wallDistance, 0), wallDistance, WallForJump);
-            Debug.DrawRay(Rigidbody2D.transform.position, new Vector2(wallDistance, 0), Color.blue);
-        }
-        else
-        {
-            WallCheckHit = Physics2D.Raycast(transform.position, new Vector2(wallDistance, 0), wallDistance, WallForJump);
-            Debug.DrawRay(Rigidbody2D.transform.position, new Vector2(wallDistance, 0), Color.blue);
-        }
-        return WallCheckHit;
-    }
+    private void SlidingDown() => Rigidbody2D.velocity = new Vector2(Rigidbody2D.velocity.x, Mathf.Clamp(Rigidbody2D.velocity.y, -1 * wallSlideSpeed, float.MaxValue));
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -91,7 +77,6 @@ public class HookWithSlidingBehaviour : MonoBehaviour, IMovement
             hookingCapability = false;
         }
     }
-
 
 
     public void Stop()
