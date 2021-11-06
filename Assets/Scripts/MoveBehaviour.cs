@@ -1,18 +1,22 @@
 ﻿using UnityEngine;
 
-public class RunBehaviour : MonoBehaviour, IMovement
+public class MoveBehaviour : MonoBehaviour, IMovement
 {
     [SerializeField] private float moveSpeed = 10f;
     private SpriteRenderer _spriteRenderer;
+    private Rigidbody2D _rigidbody2D;
 
-    public Rigidbody2D Rigidbody2D { private get; set; }
+    public Rigidbody2D Rigidbody2D { protected get => _rigidbody2D; set {
+            _rigidbody2D = value;
+            value.TryGetComponent(out _spriteRenderer);
+        } }
 
     public void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void Move(float axisMove)
+    public virtual void Move(float axisMove)
     {
         Flip(axisMove < 0);
         Rigidbody2D.velocity = new Vector2(axisMove * moveSpeed, Rigidbody2D.velocity.y);

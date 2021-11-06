@@ -11,7 +11,11 @@ public class PlayerController : MonoBehaviour, ISetBehaviour<IMovement>, ISetBeh
     public void Awake()
     {
         _movement = GetComponent<IMovement>();
-        _movement.Rigidbody2D = GetComponent<Rigidbody2D>();
+        _jump = GetComponent<IJump>();
+
+        var rb = GetComponent<Rigidbody2D>();
+        _jump.Rigidbody2D = rb;
+        _movement.Rigidbody2D = rb;
     }
 
 
@@ -40,15 +44,19 @@ public class PlayerController : MonoBehaviour, ISetBehaviour<IMovement>, ISetBeh
     }
 
 
-    void ISetBehaviour<IJump>.SetBehaviour(IJump jump)
+    IJump ISetBehaviour<IJump>.SetBehaviour(IJump jump)
     {
+        IJump oldJump = _jump;
         _jump = jump;
+        return oldJump;
     }
 
 
-    void ISetBehaviour<IMovement>.SetBehaviour(IMovement movement)
+    IMovement ISetBehaviour<IMovement>.SetBehaviour(IMovement movement)
     {
+        IMovement oldMovement = _movement;
         _movement = movement;
+        return oldMovement;
     }
 
     //Скольжение - меньше высота и пониже скорость
