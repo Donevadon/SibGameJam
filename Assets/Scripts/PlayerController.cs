@@ -4,20 +4,27 @@ public class PlayerController : MonoBehaviour, ISetBehaviour<IMovement>, ISetBeh
 {
     [SerializeField] private Transform groundCheck;
     private readonly float groundRadius = 0.1f;
+    private IJump _defaultJump;
     private IJump _jump;
+    private IMovement _defaulMovement;
     private IMovement _movement;
 
 
     public void Awake()
     {
-        _movement = GetComponent<IMovement>();
-        _jump = GetComponent<IJump>();
+        _defaulMovement = GetComponent<IMovement>();
+        _defaultJump = GetComponent<IJump>();
 
         var rb = GetComponent<Rigidbody2D>();
-        _jump.Rigidbody2D = rb;
-        _movement.Rigidbody2D = rb;
+        _defaultJump.Rigidbody2D = rb;
+        _defaulMovement.Rigidbody2D = rb;
     }
 
+    private void Start()
+    {
+        _movement = _defaulMovement;
+        _jump = _defaultJump;
+    }
 
     public void Update()
     {
@@ -57,6 +64,23 @@ public class PlayerController : MonoBehaviour, ISetBehaviour<IMovement>, ISetBeh
         IMovement oldMovement = _movement;
         _movement = movement;
         return oldMovement;
+    }
+
+
+    public void ResetBehaviours()
+    {
+        ResetJump();
+        ResetMovement();
+    }
+
+    private void ResetMovement()
+    {
+        _movement = _defaulMovement;
+    }
+
+    private void ResetJump()
+    {
+        _jump = _defaultJump;
     }
 
     //Скольжение - меньше высота и пониже скорость

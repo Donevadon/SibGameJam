@@ -6,14 +6,14 @@ public class MoveBehaviour : MonoBehaviour, IMovement
     private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody2D;
 
-    public Rigidbody2D Rigidbody2D { protected get => _rigidbody2D; set {
+    public Rigidbody2D Rigidbody2D 
+    {
+        protected get => _rigidbody2D;
+        set 
+        {
             _rigidbody2D = value;
             value.TryGetComponent(out _spriteRenderer);
-        } }
-
-    public void Awake()
-    {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        } 
     }
 
     public virtual void Move(float axisMove)
