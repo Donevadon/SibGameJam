@@ -15,7 +15,7 @@ TagManager:
   - Ground
   - Player
   - Tolpa
-  - 
+  - Electro
   - 
   - 
   - 
@@ -40,4 +40,19 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3168490453
+    locked: 0
+  - name: Houses
+    uniqueID: 1180412133
+    locked: 0
+  - name: Tree
+    uniqueID: 37545347
+    locked: 0
+  - name: People
+    uniqueID: 68486533
+    locked: 0
+  - name: Front ground
+    uniqueID: 684722791
     locked: 0

@@ -1,14 +1,15 @@
 using System;
 using UnityEngine;
-public class PlayerController : MonoBehaviour, ISetBehaviour<IMovement>, ISetBehaviour<IJump>
+
+public class PlayerController : MonoBehaviour, ISetBehaviour<IMovement>, ISetBehaviour<IJump>, IDeath
 {
     [SerializeField] private Transform groundCheck;
+    public event Action Deaded;
     private readonly float groundRadius = 0.1f;
     private IJump _defaultJump;
     private IJump _jump;
     private IMovement _defaulMovement;
     private IMovement _movement;
-
 
     public void Awake()
     {
@@ -22,8 +23,7 @@ public class PlayerController : MonoBehaviour, ISetBehaviour<IMovement>, ISetBeh
 
     private void Start()
     {
-        _movement = _defaulMovement;
-        _jump = _defaultJump;
+        ResetBehaviours();
     }
 
     public void Update()
@@ -81,6 +81,15 @@ public class PlayerController : MonoBehaviour, ISetBehaviour<IMovement>, ISetBeh
     private void ResetJump()
     {
         _jump = _defaultJump;
+    }
+
+    public void Die()
+    {
+        //TODO: Сделать смерть
+        if (Deaded != null)
+        {
+            Deaded();
+        }
     }
 
     //Скольжение - меньше высота и пониже скорость
